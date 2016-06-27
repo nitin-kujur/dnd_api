@@ -1,0 +1,858 @@
+<!-- 
+    Document   : index
+    Created on : Apr 27, 2016, 1:08:29 PM
+    Author     : ULTRON
+-->
+       
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<head>
+		<title>DND status check | Do Not Disturb Status Check. &nbsp;&nbsp;&nbsp;</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="W3 CSS/w3.css">
+		<link rel="stylesheet" type="text/css" href="W3 CSS/greyscale.css">
+    <link rel="stylesheet" type="text/css" href="W3 CSS/Gallery-Showcase.css">
+    <link rel="stylesheet" type="text/css" href="W3 CSS/animate.css">
+    <link rel="icon" href="images\logo.bmp" type="image/x-icon">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.form.js"></script>
+    <script type="text/javascript" src="js/w3data.js"></script>
+<!--    <script src="http://www.w3schools.com/lib/w3data.js"></script>-->
+<!--    <script type="text/javascript" src="js/jquery.color-2.1.2.min.js"></script>-->
+		<!-- <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"> -->
+    <style type="text/css">
+           #field_1,#field_2{
+             outline-color: #ff704d;
+             color: #ff704d;
+             outline-width: medium;
+           }
+           #field_2:hover{
+               cursor:pointer;
+           }
+           #field_1::-webkit-input-placeholder,#field_2::-webkit-input-placeholder{
+             color: #808080!important;
+             font-weight: 200;
+             text-align: center!important;
+           }
+           #file_id{
+           	 height: 0px;
+           	 opacity: 0px;
+           	 border: 0px;
+           	 width: 0px;
+           	 outline: none;
+           }
+           #foot{
+           	position: relative;
+           	bottom: 0%;
+           	width: 100%;
+           }
+           .csv{
+            height: inherit;
+           }
+           .anim{
+            
+            height: 100%;
+            width: 60px;
+            padding-left: -webkit-calc(50% - 26px);
+            padding-left: calc(50% - 26px);
+           }
+           .shakeIt{
+            transform:translate3d(0, 0, 0);
+            animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+           }
+           a{
+               text-decoration: none;
+           }
+   </style>
+   
+   <script type="text/javascript">
+        myObject01={}; myObject02={}; myObject03={}; myObject04={};
+        myObject11={}; myObject12={}; myObject13={}; myObject14={};
+        
+	scrl=document.title;
+        console.log(scrl);
+        
+        function scrlsts() {
+
+          scrl = scrl.substring(1, scrl.length) + scrl.substring(0, 1);
+          document.title = scrl;
+          setTimeout("scrlsts()", 300);
+         }
+
+        function cilick(){
+          console.log("cilick called");
+          $("#field_2").css("cursor","progress"); 
+          x=document.getElementById("file_id");
+          x.focus();
+          x.click();
+          return false;
+         }
+
+       function chan(){
+       	console.log("chan");
+       	 x = document.getElementById("file_id").files;
+         if(x.length==1){
+          size=(x[0].size);
+          name=(x[0].name).split("").reverse().join("");   //console.log(name);
+          name=name.match(/[a-z]+(?=\.)/i);                  // console.log(name);
+          name=name.split("").reverse().join("");              // console.log(name);
+          if(size>5000000||name!="csv"||size<=0){
+            $("#field_2").css("color","#ff704d");
+            $("#field_2").css("outlineColor","#ff704d"); 
+          }                     
+          else{
+            $("#field_2").css("color","#4caf50"); 
+            $("#field_2").css("outlineColor","#4caf50");
+          }
+          size=((x[0].size)/1000000).toFixed(2);
+          name=x[0].name +" ("+ size+" MB )";
+          if(size<1){
+            size=((x[0].size)/1000).toFixed(2);
+            name=x[0].name +" ("+ size+" KB )";
+          }
+          
+          title=name;   console.log(size<5);
+          }
+         else {
+          name="";
+          title=name;
+          }
+         
+        $("#field_2").css("cursor","default"); 
+         n=document.getElementById("field_2");
+         n.class;
+         n.setAttribute("value",name);
+         n.setAttribute("title",title);
+        }
+
+       function ptrnCheck(){
+         val = form1.field_1.value
+         ptrn = /((?!0)(\d{10,10},){0,4}[\d]{10,10})(?!\d)$/g;
+          if(val.match(ptrn) && val.match(ptrn) == val){
+            $("#field_1").css("outlineColor","#4caf50"); 
+            $("#field_1").css("color","#4caf50"); 
+          }          	
+          else{
+            $("#field_1").css("outlineColor","#ff704d");
+            $("#field_1").css("color","#ff704d"); 
+          }
+          	
+        }
+        $(document).ready(function() {
+           
+              
+            var options = {    
+               //target:     '#tab11',
+               //url: 'UpdateServlet',
+               //dataType:'json',
+               beforeSend : function() {
+                  $("#result").addClass("w3-hide");
+                  console.log("beforesend");
+                  if($("#tab2").css('display') == 'none')
+                      form=form1;
+                  else 
+                      form=form2;
+                  if(loading(form)){
+                    $("#loading").addClass("w3-show");
+                    console.log("beforesend true");
+                    return true;
+                  }
+                  else{
+                    console.log("beforesend false");
+                    return false;   
+                  }
+                },
+               uploadProgress : function(event, position, total, percentComplete) {
+                  $("#progTab").addClass("w3-show");
+                  $("#status").animateCss("flash");      
+                  $("#progressbar").width(percentComplete + '%');
+                  $("#percent").html(percentComplete + '%');
+                },
+               success: function(responseText) { 
+                  
+//                  StringBuffer.prototype.toString() = function toString(){
+//                    return this.buffer.join("");
+//                  };
+                  $("#progTab").removeClass("w3-show");
+                  $('#loading').removeClass('w3-show'); //console.log("success\n"+responseText);
+                  
+                  obj=responseText.replace(/'/g,'"');
+//                .replace(/\n/g, "")
+//                .replace(/\r/g, "")
+//                .replace(/\t/g, "")
+//                .replace(/\f/g, "")
+//                .replace(/\\/g, ""); 
+                  
+                  obj=obj.match(/\[(.*?)\]/);  //console.log(obj[0]);
+                  
+                  myObject01 = JSON.parse('{"resultAll":'+obj[0]+"}"); //console.log(myObject01);
+                  //var listObj01={};
+                  pager(myObject01,"'list01'");
+                  //listObj01 = JSON.parse(temp1);
+                  
+                   
+                  myObject02=extract('"A"',"resultA");
+                  //var listObj02={};
+                  pager(myObject02,"'list02'");
+                  //listObj02 = JSON.parse(temp1);
+                  
+                   
+                  myObject03=extract('"D"',"resultD"); 
+                  //var listObj03={};
+                  pager(myObject03,"'list03'");
+                  //listObj03 = JSON.parse(temp1);
+                  
+                 
+                  myObject04=extract('"--"',"resultN"); 
+                  //var listObj04={};
+                  pager(myObject04,"'list04'");
+                  //listObj04 = JSON.parse(temp1);
+                  //console.log(JSON.stringify(myObject01));   
+                  //listObj01 = JSON.parse((JSON.stringify(sb).replace(/"/g,'')).replace(/buffer/,"'list01'"));
+                  
+                  //console.log(JSON.stringify(listObj01));
+                  //console.log(((JSON.stringify(sb).replace(/"/g,'')).replace(/buffer/,"'list01'")).replace.(/'/g,'"'));
+                 
+                function extract(str,obj){
+                  var sb = new StringBuffer();
+                  for(i=0;i<myObject01.resultAll.length;i++){
+                      temp2 = JSON.stringify(myObject01.resultAll[i].Opstype); 
+                    if(temp2 === str){
+                      temp2 = JSON.stringify(myObject01.resultAll[i]); 
+                      sb.append(temp2.replace(/"/g,"'"));  
+                    } 
+                  }     //console.log(JSON.stringify(sb)+","+sb.buffer.length); 
+//                      temp2 = JSON.stringify(sb).replace(/"/g,''); 
+//                      temp2 = temp2.replace(/buffer/g,"'"+obj+"'");
+//                      temp2 = temp2.replace(/'/g,'"');  
+                      temp2 = (((JSON.stringify(sb)).replace(/"/g,'')).replace(/buffer/,"'"+obj+"'")).replace(/'/g,'"');
+                      //console.log(JSON.stringify(temp2)); 
+                      
+//                      if(obj==="resultA"){
+//                      if(typeof sb.resultA === 'undefined'){   //console.log(typeof sb.resultA+"A");
+//                      temp2 = '{"resultA":[{"PhoneNumbers":"--","ServiceAreaCode":"--","Preferences":"--","Opstype":"--","PhoneType":"--"}]}';
+//                      }}
+//                      else if(obj==="resultD"){
+//                      if(typeof sb.resultD === 'undefined'){   //console.log(typeof sb.resultD+"D");
+//                      temp2 = '{"resultD":[{"PhoneNumbers":"--","ServiceAreaCode":"--","Preferences":"--","Opstype":"--","PhoneType":"--"}]}';
+//                      }}
+//                      else if(obj==="resultN"){
+//                      if(typeof sb.resultN === 'undefined'){   //console.log(typeof sb.resultN+"N");
+//                      temp2 = '{"resultN":[{"PhoneNumbers":"--","ServiceAreaCode":"--","Preferences":"--","Opstype":"--","PhoneType":"--"}]}';
+//                      }}
+                  
+                      if(sb.buffer.length === 0){   //console.log(typeof sb.resultA+"A");
+                      temp2 = '{"'+obj+'":[{"PhoneNumbers":"--","ServiceAreaCode":"--","Preferences":"--","Opstype":"--","PhoneType":"--"}]}';
+                      }
+                  
+                      //console.log("final = "+temp2+obj);
+                      return JSON.parse(temp2); 
+                }
+                
+                function pager(myObj,obj){
+
+                  if(myObj===myObject01){
+                     n=myObject01.resultAll.length; 
+                     m=((n/25)>parseInt(n/25))?(parseInt(n/25)+1):parseInt(n/25);
+                     data = JSON.parse('{"r":"'+n+'"}');
+                     w3DisplayData("r01", data);
+                     
+                     
+                     data1 = JSON.parse('{"p":"'+m+'"}');
+                     w3DisplayData("id16", data1);
+                  }
+                  else if(myObj===myObject02){
+                     n=myObject02.resultA.length; 
+                     m=((n/25)>parseInt(n/25))?(parseInt(n/25)+1):parseInt(n/25);
+                     data = JSON.parse('{"r":"'+n+'"}');
+                     w3DisplayData("r02", data);
+                     
+                     
+                     data1 = JSON.parse('{"p":"'+m+'"}');
+                     w3DisplayData("id26", data1);
+                     
+                  }
+                  else if(myObj===myObject03){
+                     n=myObject03.resultD.length; 
+                     
+                     data = JSON.parse('{"r":"'+n+'"}');
+                     w3DisplayData("r03", data);
+                     
+                     m=((n/25)>parseInt(n/25))?(parseInt(n/25)+1):parseInt(n/25);
+                     data1 = JSON.parse('{"p":"'+m+'"}');
+                     w3DisplayData("id36", data1);
+                     
+                  }
+                  else if(myObj===myObject04){
+                     n=myObject04.resultN.length; 
+                     
+                     data = JSON.parse('{"r":"'+n+'"}');
+                     w3DisplayData("r04", data);
+                     
+                     m=((n/25)>parseInt(n/25))?(parseInt(n/25)+1):parseInt(n/25);
+                     data1 = JSON.parse('{"p":"'+m+'"}');
+                     w3DisplayData("id46", data1);
+                     
+                  }
+                  
+                  
+                  //return true;
+               }
+               
+        /*------------------------------------------------------------------------------------------------*/
+               
+          
+        /*------------------------------------------------------------------------------------------------*/
+            
+                  $("#result").removeClass("w3-hide");
+                  openTab("tab11", 2, "#nav21");
+                 // w3DisplayData("id11", listObj01);
+                  myObject011 = partR(0,myObject01,"'resultAll'");
+                  w3DisplayData("id01", myObject011);
+                 // w3DisplayData("id12", listObj02);
+                  myObject012 = partR(0,myObject02,"'resultA'");
+                  w3DisplayData("id02", myObject012);
+                  //w3DisplayData("id13", listObj03);
+                  myObject013 = partR(0,myObject03,"'resultD'");
+                  w3DisplayData("id03", myObject013);
+                  //w3DisplayData("id14", listObj04);
+                  myObject014 = partR(0,myObject04,"'resultN'");
+                  w3DisplayData("id04", myObject014);
+                  jump('r2');
+                },
+               error: function() {
+                  $('#loading').removeClass('w3-show'); console.log("error");
+                  $('#progTab').removeClass('w3-show');
+                  $('#error').addClass('w3-show');
+                },
+               complete : function() {
+                //$("#tab11").html(response.responseText); 
+                $("tr:odd").addClass("w3-theme-d3");
+//                $("li > a").filter(":first-child").removeClass("w3-hover-shadow w3-hover-green");
+//                $("li > a").filter(":last-child").removeClass("w3-hover-shadow w3-hover-green");
+                }
+            };
+            
+              $('#form1').ajaxForm(options); 
+              $('#form2').ajaxForm(options); 
+ 
+           // pass options to ajaxForm            
+    });
+        
+        function StringBuffer(){
+                      this.buffer=[];
+                  }
+                  StringBuffer.prototype.append = function append(string){
+                    this.buffer.push(string);
+                    return this;
+                  };
+        
+        function partR(n,myObj,obj){ 
+                     
+                  var sb = new StringBuffer();
+                  //||i<=myObject01.resultAll.length
+                  if(myObj===myObject01){
+                      l=myObject01.resultAll.length;      //console.log(l);
+                      m=(l<(25+(n*25)))?l:(25+(n*25));     //console.log(m);
+                      c=((m/25)>parseInt(m/25))?(parseInt(m/25)+1):parseInt(m/25);
+                      data3 = JSON.parse('{"rs":"'+((n*25)+1)+'","re":"'+m+'"}');
+                      w3DisplayData("id10", data3);
+                      data4 = JSON.parse('{"c":"'+c+'"}');
+                      w3DisplayData("id13", data4);
+                    for(i=25*n;i<m;i++){
+                      temp4 = JSON.stringify(myObject01.resultAll[i]);   //console.log(temp4);
+                      sb.append(temp4.replace(/"/g,"'")); 
+                    }
+                  } 
+                  else if(myObj===myObject02){
+                      l=myObject02.resultA.length;        //console.log(l);
+                      m=(l<(25+(n*25)))?l:(25+(n*25));        //console.log(m);
+                      c=((m/25)>parseInt(m/25))?(parseInt(m/25)+1):parseInt(m/25);
+                      data3 = JSON.parse('{"rs":"'+((n*25)+1)+'","re":"'+m+'"}');
+                      w3DisplayData("id20", data3);
+                      data4 = JSON.parse('{"c":"'+c+'"}');
+                      w3DisplayData("id23", data4);
+                    for(i=25*n;i<m;i++){
+                      temp4 = JSON.stringify(myObject02.resultA[i]); 
+                      sb.append(temp4.replace(/"/g,"'")); 
+                    }
+                  } 
+                  else if(myObj===myObject03){
+                       l=myObject03.resultD.length;       //console.log(l);
+                       m=(l<(25+(n*25)))?l:(25+(n*25));       //console.log(m);
+                       c=((m/25)>parseInt(m/25))?(parseInt(m/25)+1):parseInt(m/25);
+                       data3 = JSON.parse('{"rs":"'+((n*25)+1)+'","re":"'+m+'"}');
+                       w3DisplayData("id30", data3);
+                       data4 = JSON.parse('{"c":"'+c+'"}');
+                       w3DisplayData("id33", data4);
+                    for(i=25*n;i<m;i++){
+                      temp4 = JSON.stringify(myObject03.resultD[i]); 
+                      sb.append(temp4.replace(/"/g,"'")); 
+                    }
+                  } 
+                  else if(myObj===myObject04){
+                       l=myObject04.resultN.length;       //console.log(l);
+                       m=(l<(25+(n*25)))?l:(25+(n*25));       //console.log(m);
+                       c=((m/25)>parseInt(m/25))?(parseInt(m/25)+1):parseInt(m/25);
+                       data3 = JSON.parse('{"rs":"'+((n*25)+1)+'","re":"'+m+'"}');
+                       w3DisplayData("id40", data3);
+                       data4 = JSON.parse('{"c":"'+c+'"}');
+                       w3DisplayData("id43", data4);
+                    for(i=25*n;i<m;i++){
+                      temp4 = JSON.stringify(myObject04.resultN[i]); 
+                      sb.append(temp4.replace(/"/g,"'")); 
+                    }
+                  } 
+                  //console.log(JSON.stringify(sb));
+                  temp4 = (((JSON.stringify(sb)).replace(/"/g,'')).replace(/buffer/,obj)).replace(/'/g,'"');
+                  //console.log("page part = "+temp4);
+                  return JSON.parse(temp4)  ;
+               }
+    
+        function firstPage(id,res,pageObj){
+           myObject011 = partR(0,pageObj,"'"+res+"'");
+           w3DisplayData(id, myObject011);
+           $("tr:odd").addClass("w3-theme-d3");
+        }
+        
+        function lastPage(id,res,pageObj){
+           if(pageObj===myObject01)
+               n = myObject01.resultAll.length;
+           if(pageObj===myObject02)
+               n = myObject02.resultA.length;
+           if(pageObj===myObject03)
+               n = myObject03.resultD.length;
+           if(pageObj===myObject04)
+               n = myObject04.resultN.length;
+           m=((n/25)>parseInt(n/25))?(parseInt(n/25)):parseInt(n/25);
+               console.log(p);
+           myObject011 = partR(m,pageObj,"'"+res+"'");
+           w3DisplayData(id, myObject011);
+           $("tr:odd").addClass("w3-theme-d3");
+        }
+        
+        function nextPage(id,res,pageObj,cid){    
+           if(pageObj===myObject01)
+               n = myObject01.resultAll.length;
+           if(pageObj===myObject02)
+               n = myObject02.resultA.length;
+           if(pageObj===myObject03)
+               n = myObject03.resultD.length;
+           if(pageObj===myObject04)
+               n = myObject04.resultN.length;
+           p = parseInt($('#'+cid).html());
+           m=((n/25)>parseInt(n/25))?(parseInt(n/25)+1):parseInt(n/25);
+           if(p<m){                                  
+           myObject011 = partR(p,pageObj,"'"+res+"'");
+           w3DisplayData(id, myObject011);
+           }
+           $("tr:odd").addClass("w3-theme-d3");
+        }
+        
+        function previousPage(id,res,pageObj,cid){
+           if(pageObj===myObject01)
+               n = myObject01.resultAll.length;
+           if(pageObj===myObject02)
+               n = myObject02.resultA.length;
+           if(pageObj===myObject03)
+               n = myObject03.resultD.length;
+           if(pageObj===myObject04)
+               n = myObject04.resultN.length;
+           p = parseInt($('#'+cid).html())-2;
+           if(p>=0){
+           myObject011 = partR(p,pageObj,"'"+res+"'");
+           w3DisplayData(id, myObject011);
+           }
+           $("tr:odd").addClass("w3-theme-d3");
+        }
+        
+        function gotoPage(id,res,pageObj,fid){
+           if(pageObj===myObject01)
+               n = myObject01.resultAll.length;
+           if(pageObj===myObject02)
+               n = myObject02.resultA.length;
+           if(pageObj===myObject03)
+               n = myObject03.resultD.length;
+           if(pageObj===myObject04)
+               n = myObject04.resultN.length;
+           m=((n/25)>parseInt(n/25))?(parseInt(n/25)+1):parseInt(n/25);
+           p = parseInt($('#'+fid).val())-1;
+           if((p<m)&&(p>=0)){              console.log("p="+p);
+           myObject011 = partR(p,pageObj,"'"+res+"'");
+           w3DisplayData(id, myObject011);
+           }
+           $("tr:odd").addClass("w3-theme-d3");
+        }
+        
+        function loading(form){
+          console.log("loading beforesend...");
+          if(form == form1){    console.log("loading beforesend form1...");
+           
+            if($("#field_1").css("outlineColor") == "rgb(255, 112, 77)"){
+              document.getElementById("field_1").focus();
+              $("#field_1").animateCss("shake");
+              $("#txt_1").animateCss("w3-text-red flash");
+              console.log("loading beforesend form1 false...");
+              return false;    
+            }          
+            else{
+              //process(form);
+              console.log("loading beforesend form1 true...");
+              return true;     
+            }
+          }
+          else{   console.log("loading beforesend form2...");
+            
+            if($("#field_2").css("outlineColor") == "rgb(255, 112, 77)"){
+              document.getElementById("field_2").focus();
+              $("#field_2").animateCss("shake");
+              $("#txt_2").animateCss("w3-text-red flash");
+              console.log("loading beforesend form2 false...");
+              return false;    
+            }          
+            else{
+              //process(form);
+              console.log("loading beforesend form true...");
+              return true;     
+            }
+          }
+                    
+         // return true;
+          //return false;
+        }
+        
+        function jump(h){
+           var url = location.href;               //Save down the URL without hash.
+           location.href = "#"+h;                 //Go to the target element.
+           history.replaceState(null,null,url);   //Don't like hashes. Changing it back.
+        }
+        
+        function clean(){
+            window.location = (""+window.location).replace(/#[A-Za-z0-9_]*$/,'');
+        }
+        
+        function titleMimic(obj){ console.log("mimi");
+             val=($(obj).text()).replace("Total pages:","");
+             val = "Pages : 1-"+val;
+             $(obj).attr("title", val);
+        }
+        
+         $.fn.extend({
+               animateCss: function (animationName) {
+               var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+               $(this).addClass('animated ' + animationName).one(animationEnd, function() {
+               $(this).removeClass('animated ' + animationName);
+              });
+            }
+          });
+          
+     </script>
+	</head>
+
+	<body class="w3-theme-l1" onload="scrlsts()">
+
+    <div id="loading" class="w3-modal w3-display-container w3-sho">
+          <div class="anim w3-display-topmiddle">   
+         
+            <ui>
+               <li>
+                 <div class="w3-modal-content w3-transparent loader1 bars">
+                     <span></span>
+                     <span></span>
+                     <span></span>
+                     <span></span>
+                     <span></span>
+                     <br style="clear:right;display:none"/>
+                 </div>
+               </li>
+            </ui>
+
+          </div> 
+    </div>
+            
+            <div id="progTab" class="w3-modal">
+                <div class="w3-progress-container w3-modal-content w3-card-4" style="max-width:500px;">
+                    <div id="progressbar" class="w3-progressbar w3-green w3-padding-ver-8" style="width:0%;max-width:500px;">
+                       <div id="percent" class="w3-left w3-text-dark-grey"><b>0%</b></div>
+                    </div>
+                </div>
+
+                <div  class="w3-modal-content w3-transparent" >
+                     <div  class="w3-text-white w3-container" >
+                        <p id="status" class="w3-center">uploading...</p>
+                     </div>
+                </div>  
+            </div>    
+
+        <div id="error" class="w3-modal w3-sho">
+            <div class="w3-modal-content w3-animate-top w3-card-2">
+               <div class="w3-container w3-red w3-center w3-large">
+                  <span onclick="$('#error').removeClass('w3-show');" class="w3-text-dark-grey w3-closebtn w3-right">&times;</span>
+                  <h3>&nbsp;&nbsp;&nbsp;Server error occured !</h3>
+                  <p>Try again after sometime.</p>
+                  
+               </div>
+            </div>
+        </div>
+
+		<div class="w3-container w3-theme-d3 w3-bottombar w3-border-green header">
+			<h1 class="w3-animate-left">DND Status Check</h1>	
+		</div>
+
+<!-------------------------------------------------Header End  onsubmit="return loading(this);" -------------------------------------------------------------->
+
+    <div class="w3-container body">
+        
+      <br/><br/><br/><br/><br/>
+        <div class=" w3-container w3-padding-ver-16">
+           <div id="r1" class="w3-row w3-animate-top">
+              <a href="javascript:jump('r1');" >
+                  <div id="nav11" class="w3-col w3-container w3-small tablink w3-bottombar w3-theme w3-padding w3-border-green w3-center s6 m6 l6 w3-card-2 w3-hover-text-green nav1" onclick="openTab('tab1', 1, this); ">Input Contact<span class="w3-hide-small"> Numbers</span></div>
+              </a>
+              <a href="javascript:jump('r1');" class="csv">
+                  <div class="csv w3-col w3-container w3-small tablink w3-bottombar w3-theme w3-padding w3-border-green w3-center s6 m6 l6 w3-card-2 w3-hover-text-green nav1" onclick="openTab('tab2', 1, this); ">Upload CSV File</div>
+              </a>
+           </div>
+
+           <div id="tab1" class="w3-container w3-theme-d3 w3-card-2 w3-padding-32 w3-animate-zoom tab">
+           	  <form id="form1" class="w3-center" action="processList1.php" method="post"> 
+        		
+                      <input id="field_1" class="w3-input w3-border-0 w3-theme-d1 w3-padding w3-center" type="text" name="numlist" onkeyup="ptrnCheck()" onchange="ptrnCheck()" onfocus="ptrnCheck()" maxlength="54" placeholder="Eg. 9876543210,9908765432 etc." autofocus required >
+        		      <p id='txt_1' class="w3-small">Hint : input comma (,) separated 10 digit mobile numbers [max. 5]<br/>no blanckspace and special characters allowed</p><br/>
+        		      <button id="button_1" class="w3-btn w3-round w3-green" type="submit">check</button>
+        		
+        	    </form>	
+           </div>
+              
+           <div id="tab2" class="w3-container w3-theme-d3 w3-card-2 w3-padding-32 w3-animate-opacity tab" style="">
+              <form id="form2" class="w3-center" action="processCSV.php" method="post" enctype="multipart/form-data">   
+        		      <input type="file" id="file_id" class="w3-theme-d3" name="fileToUpload" onchange="chan();" accept=".csv">
+        	      	<input type='text' id='field_2' class="w3-input w3-border-0 w3-theme-d1 w3-padding w3-center" size="50" title="No files Selected" placeholder='No file selected...' value='' required onkeydown="cilick();" onclick='cilick();'>
+        	      	<br/>
+                  <p id='txt_2' class="w3-small">Hint : max. allowable size 5 MB *.csv file</p><br/>
+        	      	<button id="button_2" class="w3-btn w3-round w3-green" type="submit">upload</button>
+
+        	    </form>
+           </div>
+
+        </div>
+      <br/><br/><br/><br/><br/>
+
+      <!-------------------------------------------------------------------------------------------------------------------->
+      <div id="result" class=" w3-container w3-padding-ver-16 w3-hide">
+           <div id="r2" class="w3-row w3-animate-top">
+              <a href="javascript:jump('r2');">
+                  <div id="nav21" class="w3-col w3-container w3-small tablink w3-bottombar w3-theme w3-padding w3-border-green w3-center s3 m3 l3 w3-card-2 w3-hover-text-green nav2"  onclick="openTab('tab11',2,this);">All</div>
+              </a>
+              <a href="javascript:jump('r2');" class="csv">
+                  <div class="csv w3-col w3-container w3-small tablink w3-bottombar w3-theme w3-padding w3-border-green w3-center s3 m3 l3 w3-card-2 w3-hover-text-green nav2"  onclick="openTab('tab12',2,this);"><span class="w3-hide-small">DND </span>Enabled</div>
+              </a>
+              <a href="javascript:jump('r2');" class="csv">
+                  <div class="csv w3-col w3-container w3-small tablink w3-bottombar w3-theme w3-padding w3-border-green w3-center s3 m3 l3 w3-card-2 w3-hover-text-green nav2"  onclick="openTab('tab13',2,this);"><span class="w3-hide-small">DND </span>Disabled</div>
+              </a>
+              <a href="javascript:jump('r2');" class="csv">
+                  <div class="csv w3-col w3-container w3-small tablink w3-bottombar w3-theme w3-padding w3-border-green w3-center s3 m3 l3 w3-card-2 w3-hover-text-green nav2"  onclick="openTab('tab14',2,this);">Not&nbsp;Found</div>
+              </a>
+           </div>
+           
+           <div id="tab11" class="w3-container w3-theme-d3 w3-card-2 w3-padding-32 w3-animate-zoom tab1">
+ 
+                             
+<!--               <ul id="id11" class="w3-navbar w3-row w3-row-padding">
+                  <li ><a w3-repeat="list01" class="w3-theme-d1 w3-white w3-hover-green w3-hover-shadow  w3-text-white" href="javascript:page(this);">{{li}}</a></li>
+               </ul -->
+               
+               <span>
+                   <button class="w3-left w3-btn w3-theme-d1 w3-text-white w3-margin-right w3-padding">Showing <span id="id10">{{rs}}-{{re}}</span>  of  <span id="r01">{{r}}</span> records</button>
+                   <button id="id11" title="Go to first page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="firstPage('id01','resultAll',myObject01);">&#10094;&#10094;</button>
+                   <button id="id12" title="Go to previous page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="previousPage('id01','resultAll',myObject01,'id13');">&#10094;</button>
+                   <button id="id13" title="Current page" class="w3-left w3-btn w3-green w3-text-white w3-margin-right w3-padding">{{c}}</button>
+                   <button id="id14" title="Go to next page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="nextPage('id01','resultAll',myObject01,'id13');">&#10095;</button>
+                   <button id="id15" title="Go to last page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="lastPage('id01','resultAll',myObject01);">&#10095;&#10095;</button>
+                   <button id="id16" onmouseover="titleMimic(this);" title="" class="w3-left w3-btn w3-theme-d1 w3-text-white w3-margin-right w3-padding">Total pages:{{p}}</button>
+                   <button class="w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="gotoPage('id01','resultAll',myObject01,'id17');">Go &raquo;</button>
+                   <input id="id17" style="width:70px;" title="Input page no. to go to" placeholder="page" class="w3-center w3-left w3-input w3-border-0 w3-theme-l1 w3-white  w3-text-white" type="text"></input>
+               </span>
+               
+              <div class="w3-responsive" style="clear:both;"> 
+              <table id="id01" class="w3-table w3-striped w3-centered w3-section">
+                <tr class="w3-bottombar w3-border-dark-grey w3-theme">
+                   <th>Phone Numbers</th>
+                   <th>Service Area Code</th>
+                   <th>Preferences</th>
+                   <th>Opstype</th>
+                   <th>Phone Type</th>
+                </tr>
+                <tr w3-repeat="resultAll" class="w3-theme-d2">
+                   <td>{{PhoneNumbers}}</td>
+                   <td>{{ServiceAreaCode}}</td>
+                   <td>{{Preferences}}</td>
+                   <td>{{Opstype}}</td>
+                   <td>{{PhoneType}}</td>
+                </tr>
+              </table>
+              </div>
+           </div>
+              
+           <div id="tab12" class="w3-container w3-theme-d3 w3-card-2 w3-padding-32 w3-animate-opacity tab1">
+<!--               <span>               
+               <ul id="id12" class="w3-pagination ">
+                  <li style="width: inherit; height: inherit;"><a w3-repeat="list02" class="w3-theme-d1 w3-white w3-hover-green w3-hover-shadow  w3-text-white w3-margin-8" href="javascript:page(this);">{{li}}</a></li>
+               </ul 
+               </span>-->
+               
+                <span>
+                   <button  class="w3-left w3-btn w3-theme-d1 w3-white w3-text-white w3-margin-right w3-padding">Showing <span id="id20">{{rs}}-{{re}}</span>  of  <span id="r02">{{r}}</span> records</button>
+                   <button id="id21" title="Go to first page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="firstPage('id02','resultA',myObject02);">&#10094;&#10094;</button>
+                   <button id="id22" title="Go to previous page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="previousPage('id02','resultA',myObject02,'id23');">&#10094;</button>
+                   <button id="id23" title="Current page" class="w3-left w3-btn w3-green w3-text-white w3-margin-right w3-padding">{{c}}</button>
+                   <button id="id24" title="Go to next page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="nextPage('id02','resultA',myObject02,'id23');">&#10095;</button>
+                   <button id="id25" title="Go to last page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="lastPage('id02','resultA',myObject02);">&#10095;&#10095;</button>
+                   <button id="id26" class="w3-left w3-btn w3-theme-d1 w3-text-white w3-margin-right w3-padding">Total pages:{{p}}</button>
+                   <button onmouseover="titleMimic(this);" title="" class="w3-btn w3-theme-d1 w3-white w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="gotoPage('id02','resultA',myObject02,'id27');">Go &raquo;</button>
+                   <input id="id27" title="Input page no. to go to" style="width:70px;" placeholder="page" class="w3-center w3-left w3-input w3-border-0 w3-theme-l1 w3-white  w3-text-white" type="text"></input>
+               </span>
+               
+              <div class="w3-responsive" style="clear:both;">
+              <table id="id02" class="w3-table w3-striped w3-centered w3-section">
+                <tr class="w3-bottombar w3-theme w3-border-dark-grey">
+                   <th>Phone Numbers</th>
+                   <th>Service Area Code</th>
+                   <th>Preferences</th>
+                   <th>Opstype</th>
+                   <th>Phone Type</th>
+                </tr>
+                <tr w3-repeat="resultA" class="w3-theme-d2">
+                   <td>{{PhoneNumbers}}</td>
+                   <td>{{ServiceAreaCode}}</td>
+                   <td>{{Preferences}}</td>
+                   <td>{{Opstype}}</td>
+                   <td>{{PhoneType}}</td>
+                </tr>
+              </table>
+              </div>
+           </div>
+
+           <div id="tab13" class="w3-container w3-theme-d3 w3-card-2 w3-padding-32 w3-animate-opacity tab1">
+<!--               <span>               
+               <ul id="id13" class="w3-pagination ">
+                  <li style="width: inherit; height: inherit;"><a w3-repeat="list03" class="w3-theme-d1 w3-white w3-hover-green w3-hover-shadow  w3-text-white w3-margin-8" href="javascript:page(this);">{{li}}</a></li>
+               </ul 
+               </span>-->
+
+                <span>
+                   <button  class="w3-left w3-btn w3-theme-d1 w3-white w3-text-white w3-margin-right w3-padding">Showing <span id="id30">{{rs}}-{{re}}</span>  of <span id="r03">{{r}}</span> records</button>
+                   <button id="id31" title="Go to first page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="firstPage('id03','resultD',myObject03);">&#10094;&#10094;</button>
+                   <button id="id32" title="Go to previous page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="previousPage('id03','resultD',myObject03,'id33');">&#10094;</button>
+                   <button id="id33" title="Current page" class="w3-left w3-btn w3-green w3-text-white w3-margin-right w3-padding">{{c}}</button>
+                   <button id="id34" title="Go to next page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="nextPage('id03','resultD',myObject03,'id33');">&#10095;</button>
+                   <button id="id35" title="Go to last page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="lastPage('id03','resultD',myObject03);">&#10095;&#10095;</button>
+                   <button id="id36" class="w3-left w3-btn w3-theme-d1 w3-text-white w3-margin-right w3-padding">Total pages:{{p}}</button>
+                   <button onmouseover="titleMimic(this);" title="" class="w3-btn w3-theme-d1 w3-white w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="gotoPage('id03','resultD',myObject03,'id37');">Go &raquo;</button>
+                   <input id="id37" title="Input page no. to go to" style="width:70px;" placeholder="page" class="w3-center w3-left w3-input w3-border-0 w3-theme-l1 w3-white  w3-text-white" type="text"></input>
+               </span>
+
+              <div class="w3-responsive" style="clear:both;">
+              <table id="id03" class="w3-table w3-striped w3-centered w3-section">
+                <tr class="w3-bottombar w3-theme w3-border-dark-grey">
+                   <th>Phone Numbers</th>
+                   <th>Service Area Code</th>
+                   <th>Preferences</th>
+                   <th>Opstype</th>
+                   <th>Phone Type</th>
+                </tr>
+                <tr w3-repeat="resultD" class="w3-theme-d2">
+                   <td>{{PhoneNumbers}}</td>
+                   <td>{{ServiceAreaCode}}</td>
+                   <td>{{Preferences}}</td>
+                   <td>{{Opstype}}</td>
+                   <td>{{PhoneType}}</td>
+                </tr>
+              </table>
+              </div>
+           </div>
+
+           <div id="tab14" class="w3-container w3-theme-d3 w3-card-2 w3-padding-32 w3-animate-opacity tab1">
+<!--               <span>               
+               <ul id="id14" class="w3-pagination ">
+                  <li style="width: inherit; height: inherit;"><a w3-repeat="list04" class="w3-theme-d1 w3-white w3-hover-green w3-hover-shadow  w3-text-white w3-margin-8" href="javascript:page(this);">{{li}}</a></li>
+               </ul 
+               </span>-->
+
+               <span>
+                   <button  class="w3-left w3-btn w3-theme-d1 w3-white w3-text-white w3-margin-right w3-padding">Showing <span id="id40">{{rs}}-{{re}}</span>  of  <span id="r04">{{r}}</span> records</button>
+                   <button id="id41" title="Go to first page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="firstPage('id04','resultN',myObject04);">&#10094;&#10094;</button>
+                   <button id="id42" title="Go to previous page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="previousPage('id04','resultN',myObject04,'id43');">&#10094;</button>
+                   <button id="id43" title="Current page" class="w3-left w3-btn w3-green w3-text-white w3-margin-right w3-padding">{{c}}</button>
+                   <button id="id44" title="Go to next page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="nextPage('id04','resultN',myObject04,'id43');">&#10095;</button>
+                   <button id="id45" title="Go to last page" class="w3-left w3-btn w3-theme-d1 w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="lastPage('id04','resultN',myObject04);">&#10095;&#10095;</button>
+                   <button id="id46" class="w3-left w3-btn w3-theme-d1 w3-text-white w3-margin-right w3-padding">Total pages:{{p}}</button>
+                   <button onmouseover="titleMimic(this);" title="" class="w3-btn w3-theme-d1 w3-white w3-hover-green w3-hover-shadow  w3-text-white w3-margin-right w3-padding" onclick="gotoPage('id04','resultN',myObject04,'id47');">Go &raquo;</button>
+                   <input id="id47" title="Input page no. to go to" style="width:70px;" placeholder="page" class="w3-center w3-left w3-input w3-border-0 w3-theme-l1 w3-white  w3-text-white" type="text"></input>
+               </span>
+
+              <div class="w3-responsive" style="clear:both;">
+              <table id="id04" class="w3-table w3-striped w3-centered w3-section">
+                <tr class="w3-bottombar w3-theme w3-border-dark-grey">
+                   <th>Phone Numbers</th>
+                   <th>Service Area Code</th>
+                   <th>Preferences</th>
+                   <th>Opstype</th>
+                   <th>Phone Type</th>
+                </tr>
+                <tr w3-repeat="resultN" class="w3-theme-d2">
+                   <td>{{PhoneNumbers}}</td>
+                   <td>{{ServiceAreaCode}}</td>
+                   <td>{{Preferences}}</td>
+                   <td>{{Opstype}}</td>
+                   <td>{{PhoneType}}</td>
+                </tr>
+              </table>
+              </div>
+           </div>
+
+        </div>
+      <br/><br/><br/><br/><br/>
+      <!-------------------------------------------------------------------------------------------------------------------->
+
+    </div>
+
+        <footer id="foot" class="footer">
+          <div class="w3-container w3-theme-d3">
+          	 <p></p>	
+          </div>
+          <div class="w3-container w3-green">
+          	 <p class="w3-center">&copy; Copyright Protected 2016-17</p>
+          </div>
+        </footer>
+
+        <script>
+           
+           openTab("tab1", 1, "#nav11");
+           openTab("tab11", 2, "#nav21");
+           function openTab(tabName, n, obj) {
+           var i;
+           if(n==1){
+             var x = document.getElementsByClassName("tab");
+             var y = document.getElementsByClassName("nav1"); 
+           }
+           
+           else{
+             var x = document.getElementsByClassName("tab1");           
+             var y = document.getElementsByClassName("nav2");
+           }
+                      
+           for (i = 0; i < x.length; i++) {
+           x[i].style.display = "none";  
+           y[i].classList.remove("w3-theme-d3");
+           y[i].classList.add("w3-theme");
+           }
+           document.getElementById(tabName).style.display = "block";  
+           $(obj).removeClass("w3-theme").addClass("w3-theme-d3");
+         } 
+        </script>
+        
+
+        
+	</body>
+</html>
